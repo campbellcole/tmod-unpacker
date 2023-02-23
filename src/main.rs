@@ -9,7 +9,7 @@ use thiserror::Error;
 use progress_bar::*;
 
 #[derive(Debug, Error)]
-pub enum TModError {
+enum TModError {
     #[error("No input file given")]
     NoInputFile,
     #[error("No output directory given")]
@@ -22,23 +22,37 @@ pub enum TModError {
     Utf8Error(#[from] std::string::FromUtf8Error),
 }
 
-pub struct ModFile {
+struct ModFile {
     pub name: String,
     pub uncompressed_len: i32,
     pub compressed_len: i32,
 }
 
-fn main() -> Result<(), TModError> {
+fn main() {
     env_logger::init();
 
+    if let Err(e) = unpack() {
+        eprintln!("Error: {}", e);
+        if matches!(e, TModError::NoInputFile | TModError::NoOutputDirectory) {
+            println!();
+            show_usage();
+        }
+    }
+}
+
+fn show_usage() {
+    println!("Usage: tmod-extract <input file> <output directory>");
+    println!("Extracts the contents of a tModLoader mod file.\n");
+    println!("Set the RUST_LOG environment variable to set the log level.");
+}
+
+fn unpack() -> Result<(), TModError> {
     let mut args = std::env::args();
     let _ = args.next();
 
     let path = args.next().ok_or(TModError::NoInputFile)?;
     if path == "-h" || path == "--help" {
-        println!("Usage: tmod-extract <input file> <output directory>");
-        println!("Extracts the contents of a tModLoader mod file.\n");
-        println!("Set the RUST_LOG environment variable to set the log level.");
+        show_usage();
         return Ok(());
     }
 
@@ -172,7 +186,7 @@ fn main() -> Result<(), TModError> {
 
 // read a 7 bit encoded string length
 // then read that many bytes into a string
-pub fn read_csharp_string(reader: &mut BinaryReader) -> Result<String, TModError> {
+fn read_csharp_string(reader: &mut BinaryReader) -> Result<String, TModError> {
     let mut string_len = 0;
     let mut done = false;
     let mut step = 0;
