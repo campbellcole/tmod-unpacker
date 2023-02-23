@@ -2,6 +2,8 @@
 
 A simple CLI to unpack `.tmod` files, written in pure Rust.
 
+**This branch is modified to support a much lower MSRV of `1.56.1`. Only use this branch if necessary.**
+
 # Installation
 
 ```sh
@@ -27,5 +29,3 @@ You can enable logging with this crate using the `RUST_LOG` environment variable
 ### Side Note
 
 There are no tests written for this crate because I do not have the capability to create a dummy `.tmod` file at the moment. This was tested on a few `.tmod` files from the Steam Workshop, but retrieving those requires SteamCMD and being logged in, which is not feasible for tests. If you encounter any issues, please open an issue on [GitHub issues](https://github.com/campbellcole/tmod-unpacker/issues).
-
-Also, the MSRV of this crate is `1.63.0` only because of the usage of `try_exists`. If for some reason you require this crate but cannot update to this version or higher, open an issue and let me know. Without `try_exists`, the MSRV would be `1.60.0`, and I could probably get it even lower if necessary.

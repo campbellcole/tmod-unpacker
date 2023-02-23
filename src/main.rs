@@ -45,8 +45,7 @@ fn main() -> Result<(), TModError> {
     let out_dir = args.next().ok_or(TModError::NoOutputDirectory)?;
     let out_dir = PathBuf::from(out_dir);
 
-    trace!("checking if output directory exists: {:?}", out_dir);
-    if !out_dir.try_exists()? {
+    if !out_dir.exists() {
         trace!("output directory does not exist, creating it");
         std::fs::create_dir_all(&out_dir)?;
     }
@@ -146,8 +145,7 @@ fn main() -> Result<(), TModError> {
         }
         let file_path = out_dir.join(&file.name);
         if let Some(parent) = file_path.parent() {
-            trace!("checking if file's parent directory exists: {:?}", parent);
-            if !parent.try_exists()? {
+            if !parent.exists() {
                 trace!("creating parent directory: {:?}", parent);
                 std::fs::create_dir_all(parent)?;
             }

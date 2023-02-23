@@ -3,8 +3,8 @@ name = "tmod-unpacker"
 authors = ["Campbell Cole <cmcoleco@gmail.com>"]
 version = "1.0.0"
 edition = "2021"
-rust-version = "1.63.0"
-publish = true
+rust-version = "1.56.1"
+publish = false
 license = "MIT OR Apache-2.0"
 description = "A simple CLI to unpack .tmod files, written in pure Rust."
 readme = "README.md"
@@ -18,7 +18,7 @@ categories = ["command-line-utilities"]
 
 [dependencies]
 binary_rw = "4.0.4"
-env_logger = "0.10.0"
+env_logger = "0.9.0"
 flate2 = "1.0.25"
 hex = "0.4.3"
 log = "0.4.17"
