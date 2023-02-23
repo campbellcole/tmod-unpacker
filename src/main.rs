@@ -14,6 +14,10 @@ enum TModError {
     NoInputFile,
     #[error("No output directory given")]
     NoOutputDirectory,
+    #[error("Invalid header: `{0:?}`, expected `{1:?}`")]
+    InvalidHeader(Vec<u8>, &'static [u8]),
+    #[error("Missing some file entries: have {0}, expected {1}")]
+    MissingFileEntries(usize, usize),
     #[error("IO error: {0}")]
     IoError(#[from] std::io::Error),
     #[error("Read error: {0}")]
@@ -41,10 +45,16 @@ fn main() {
 }
 
 fn show_usage() {
-    println!("Usage: tmod-extract <input file> <output directory>");
+    println!(
+        "Usage: {} <input file> <output directory>",
+        env!("CARGO_PKG_NAME")
+    );
     println!("Extracts the contents of a tModLoader mod file.\n");
-    println!("Set the RUST_LOG environment variable to set the log level.");
+    println!("Set the RUST_LOG environment variable to set the log level.\n");
+    println!("{} v{}", env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION"));
 }
+
+const TMOD_HEADER: &[u8] = b"TMOD";
 
 fn unpack() -> Result<(), TModError> {
     let mut args = std::env::args();
@@ -72,7 +82,9 @@ fn unpack() -> Result<(), TModError> {
 
     trace!("reading header");
     let header = reader.read_bytes(4)?;
-    assert_eq!(b"TMOD", &header[..]);
+    if header != TMOD_HEADER {
+        return Err(TModError::InvalidHeader(header, TMOD_HEADER));
+    }
     debug!("TMOD header found");
 
     trace!("reading tmodloader version");
@@ -142,7 +154,12 @@ fn unpack() -> Result<(), TModError> {
         set_progress_bar_action("Extracting", Color::Blue, Style::Bold);
     }
 
-    assert_eq!(file_entries.len(), file_count as usize);
+    if file_entries.len() != file_count as usize {
+        return Err(TModError::MissingFileEntries(
+            file_entries.len(),
+            file_count as usize,
+        ));
+    }
 
     info!("Extracting files");
     for file in file_entries {
