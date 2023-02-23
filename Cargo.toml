@@ -1,0 +1,26 @@
+[package]
+name = "tmod-unpacker"
+authors = ["Campbell Cole <cmcoleco@gmail.com>"]
+version = "1.0.0"
+edition = "2021"
+rust-version = "1.63.0"
+publish = true
+license = "MIT OR Apache-2.0"
+description = "A simple CLI to unpack .tmod files, written in pure Rust."
+readme = "README.md"
+repository = "https://github.com/campbellcole/tmod-unpacker"
+homepage = "https://github.com/campbellcole/tmod-unpacker"
+documentation = "https://github.com/campbellcole/tmod-unpacker"
+keywords = ["tmod", "terraria", "unpacker", "cli"]
+categories = ["command-line-utilities"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+binary_rw = "4.0.4"
+env_logger = "0.10.0"
+flate2 = "1.0.25"
+hex = "0.4.3"
+log = "0.4.17"
+progress_bar = "1.0.3"
+thiserror = "1.0.38"
