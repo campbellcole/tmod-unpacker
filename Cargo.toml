@@ -13,6 +13,7 @@ homepage = "https://github.com/campbellcole/tmod-unpacker"
 documentation = "https://github.com/campbellcole/tmod-unpacker"
 keywords = ["tmod", "terraria", "unpacker", "cli"]
 categories = ["command-line-utilities"]
+exclude = ["flake.nix", "flake.lock"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
