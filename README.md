@@ -2,7 +2,7 @@
 
 A simple CLI to unpack `.tmod` files, written in pure Rust.
 
-**This branch is modified to support a much lower MSRV of `1.56.1`. Only use this branch if necessary.**
+**This branch is modified to support a much lower MSRV of `1.56.1`. Only use this branch if necessary. This branch will only be maintained until rebasing requires manual conflict resolution.**
 
 # Installation
 
